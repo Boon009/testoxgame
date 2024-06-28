@@ -53,7 +53,7 @@ class MainActivity : ComponentActivity() {
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(innerPadding) // Use the padding values here
+                        .padding(innerPadding)
                 ) {
                     Text(
                         text = "Current Turn: ${viewModel.currentPlayer.value}",
@@ -79,7 +79,7 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(16.dp),
-                        contentAlignment = Alignment.Center // Center the content inside the Box
+                        contentAlignment = Alignment.Center
                     ) {
                         Text(text = viewModel.winnerString.value)
                     }
@@ -94,7 +94,7 @@ class MainActivity : ComponentActivity() {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 16.dp),
-            contentAlignment = Alignment.Center // Center the content inside the Box
+            contentAlignment = Alignment.Center
         ) {
             Button(
                 onClick = {
@@ -104,9 +104,9 @@ class MainActivity : ComponentActivity() {
                 modifier = Modifier.align(Alignment.Center)
             ) {
                 Text(
-                    text = "Restart",
+                    text = "",
                     color = Color.White
-                ) // Change text color to white for better visibility
+                )
             }
         }
     }
@@ -119,7 +119,7 @@ class MainActivity : ComponentActivity() {
     ) {
         Box(
             modifier = Modifier
-                .size(60.dp)  // Ensure the box is exactly 30dp by 30dp
+                .size(60.dp)
                 .border(2.dp, Color.Black)
                 .clip(RoundedCornerShape(8.dp))
                 .padding(2.dp)
@@ -133,7 +133,7 @@ class MainActivity : ComponentActivity() {
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .size(60.dp)  // Ensure the image is exactly 30dp by 30dp
+                    .size(60.dp)
                     .clip(RoundedCornerShape(8.dp))
             )
         }

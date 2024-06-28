@@ -26,8 +26,6 @@ class GameViewModel : ViewModel() {
             Model.ValuaOnTurn(9, "z"),
             Model.ValuaOnTurn(9, "z"),
         )
-//        get() =TODO()
-        set(value) = TODO()
 
     var imageList = mutableStateListOf(
         Model.ImageItem(R.drawable.whitesquare, R.color.white, false),
@@ -109,21 +107,17 @@ class GameViewModel : ViewModel() {
     }
 
     fun checkWin(board: Array<IntArray>): Boolean {
-        // Check rows
-        for (i in 0 until 3) {
-            if (board[i][0] != 0 && board[i][0] == board[i][1] && board[i][1] == board[i][2]) {
+        for (rows in 0 until 3) {
+            if (board[rows][0] != 0 && board[rows][0] == board[rows][1] && board[rows][1] == board[rows][2]) {
+                return true
+            }
+        }
+        for (columns in 0 until 3) {
+            if (board[0][columns] != 0 && board[0][columns] == board[1][columns] && board[1][columns] == board[2][columns]) {
                 return true
             }
         }
 
-        // Check columns
-        for (j in 0 until 3) {
-            if (board[0][j] != 0 && board[0][j] == board[1][j] && board[1][j] == board[2][j]) {
-                return true
-            }
-        }
-
-        // Check diagonals
         if (board[0][0] != 0 && board[0][0] == board[1][1] && board[1][1] == board[2][2]) {
             return true
         }
@@ -136,8 +130,8 @@ class GameViewModel : ViewModel() {
 
     fun logMatrix(matrix: Array<IntArray>, name: String) {
         Log.d("Matrix", "name : $name")
-        for (row in matrix) {
-            Log.d("Matrix", row.joinToString(", "))
+        for (i in matrix) {
+            Log.d("Matrix", i.joinToString(", "))
         }
     }
 }
