@@ -6,13 +6,25 @@ import androidx.lifecycle.ViewModel
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.viewModelScope
 import com.example.oxcompose.R
+
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.time.delay
 
 class GameViewModel : ViewModel() {
     var turn by mutableStateOf(0)
     var currentPlayer = mutableStateOf("O")
     var winnerString = mutableStateOf("")
     var selectedImageIndex = mutableStateOf(-1)
+
+
+    private val _timeLeft = MutableStateFlow(10)
+    val timeLeft = _timeLeft.asStateFlow()
+
 
     var valuaOnTurn: MutableList<Model.ValuaOnTurn>
          = mutableListOf(
@@ -49,6 +61,7 @@ class GameViewModel : ViewModel() {
         turn = 0
         winnerString.value = ""
         currentPlayer.value = "O"
+        _timeLeft.value=10
     }
 
     fun handleClick(index: Int) {
@@ -91,10 +104,12 @@ class GameViewModel : ViewModel() {
             if (valuaOnTurn[i].clicked == "o") {
                 oMretix[valuaOnTurn[i].index / 3][valuaOnTurn[i].index % 3] = 1
                 logMatrix(oMretix, "oMretix")
+                startCountdown("o")
             }
             if (valuaOnTurn[i].clicked == "x") {
                 xMretix[valuaOnTurn[i].index / 3][valuaOnTurn[i].index % 3] = 1
                 logMatrix(xMretix, "xMretix")
+                startCountdown("x")
             }
         }
         if (checkWin(xMretix)) {
@@ -126,6 +141,34 @@ class GameViewModel : ViewModel() {
         }
 
         return false
+    }
+
+
+    private fun startCountdown(winner : String) {
+        Log.d("Boon1","Turn : ${turn}")
+        if(turn ==1){
+            viewModelScope.launch {
+                while (_timeLeft.value > 0 && winnerString.value=="") {
+                    delay(1000L)
+                    _timeLeft.value -= 1
+                }
+                loser(winner)
+            }
+        }else{
+            _timeLeft.value=10
+        }
+
+    }
+
+
+    fun loser(winner : String){
+        for (index2 in 0 until imageList.size) {
+            imageList[index2].clicked = true
+        }
+        if (winnerString.value==""){
+            winnerString.value = "Winner : $winner is winner."
+        }
+
     }
 
     fun logMatrix(matrix: Array<IntArray>, name: String) {

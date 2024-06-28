@@ -28,6 +28,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.oxcompose.activity.mainactivity.Model
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 
@@ -47,6 +49,8 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     fun ImageGrid(viewModel: GameViewModel, modifier: Modifier = Modifier) {
+        val timeLeft = viewModel.timeLeft.collectAsState()
+
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             content = { innerPadding ->
@@ -54,16 +58,34 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(innerPadding)
+                        .background(Color.LightGray)
                 ) {
-                    Text(
-                        text = "Current Turn: ${viewModel.currentPlayer.value}",
-                        modifier = Modifier.padding(16.dp),
-                    )
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp)
+                    ){
+                        Text(
+                            text = "Current Turn: ${viewModel.currentPlayer.value}",
+                            modifier = Modifier.weight(1f),
+
+                        )
+
+                        Text(
+                            text = "Time left: ${timeLeft.value}",
+                            modifier = Modifier.weight(1f),
+                        )
+                    }
+
+
                     LazyVerticalGrid(
                         columns = GridCells.Fixed(3),
                         verticalArrangement = Arrangement.spacedBy(4.dp),
                         horizontalArrangement = Arrangement.spacedBy(4.dp),
-                        modifier = Modifier.padding(20.dp)
+                        modifier = Modifier
+                            .padding(16.dp)
+                            //.weight(1f)
                     ) {
                         items(viewModel.imageList.size) { index ->
                             val imageItem = viewModel.imageList[index]
@@ -78,7 +100,7 @@ class MainActivity : ComponentActivity() {
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(16.dp),
+                            .padding(8.dp),
                         contentAlignment = Alignment.Center
                     ) {
                         Text(text = viewModel.winnerString.value)
@@ -93,7 +115,7 @@ class MainActivity : ComponentActivity() {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 16.dp),
+                .padding(top = 4.dp),
             contentAlignment = Alignment.Center
         ) {
             Button(
@@ -104,7 +126,7 @@ class MainActivity : ComponentActivity() {
                 modifier = Modifier.align(Alignment.Center)
             ) {
                 Text(
-                    text = "",
+                    text = "Restart",
                     color = Color.White
                 )
             }
