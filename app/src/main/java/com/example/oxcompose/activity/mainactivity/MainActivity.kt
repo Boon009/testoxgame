@@ -58,7 +58,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(innerPadding)
-                        .background(Color.LightGray)
+                        //.background(Color.LightGray)
                 ) {
 
                     Row(
