@@ -11,5 +11,4 @@ class Model {
         var backgroundId: Int,
         var clicked: Boolean,
     )
-
 }

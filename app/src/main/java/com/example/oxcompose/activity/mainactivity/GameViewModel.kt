@@ -2,18 +2,16 @@ package com.example.oxcompose.activity.mainactivity
 
 import android.util.Log
 import androidx.compose.runtime.getValue
-import androidx.lifecycle.ViewModel
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.oxcompose.R
-
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.time.delay
 
 class GameViewModel : ViewModel() {
     var turn by mutableStateOf(0)
@@ -21,13 +19,11 @@ class GameViewModel : ViewModel() {
     var winnerString = mutableStateOf("")
     var selectedImageIndex = mutableStateOf(-1)
 
-
     private val _timeLeft = MutableStateFlow(10)
     val timeLeft = _timeLeft.asStateFlow()
 
-
-    var valuaOnTurn: MutableList<Model.ValuaOnTurn>
-         = mutableListOf(
+    var valuaOnTurn: MutableList<Model.ValuaOnTurn> =
+        mutableListOf(
             Model.ValuaOnTurn(9, "z"),
             Model.ValuaOnTurn(9, "z"),
             Model.ValuaOnTurn(9, "z"),
@@ -39,17 +35,18 @@ class GameViewModel : ViewModel() {
             Model.ValuaOnTurn(9, "z"),
         )
 
-    var imageList = mutableStateListOf(
-        Model.ImageItem(R.drawable.whitesquare, R.color.white, false),
-        Model.ImageItem(R.drawable.whitesquare, R.color.white, false),
-        Model.ImageItem(R.drawable.whitesquare, R.color.white, false),
-        Model.ImageItem(R.drawable.whitesquare, R.color.white, false),
-        Model.ImageItem(R.drawable.whitesquare, R.color.white, false),
-        Model.ImageItem(R.drawable.whitesquare, R.color.white, false),
-        Model.ImageItem(R.drawable.whitesquare, R.color.white, false),
-        Model.ImageItem(R.drawable.whitesquare, R.color.white, false),
-        Model.ImageItem(R.drawable.whitesquare, R.color.white, false),
-    )
+    var imageList =
+        mutableStateListOf(
+            Model.ImageItem(R.drawable.whitesquare, R.color.white, false),
+            Model.ImageItem(R.drawable.whitesquare, R.color.white, false),
+            Model.ImageItem(R.drawable.whitesquare, R.color.white, false),
+            Model.ImageItem(R.drawable.whitesquare, R.color.white, false),
+            Model.ImageItem(R.drawable.whitesquare, R.color.white, false),
+            Model.ImageItem(R.drawable.whitesquare, R.color.white, false),
+            Model.ImageItem(R.drawable.whitesquare, R.color.white, false),
+            Model.ImageItem(R.drawable.whitesquare, R.color.white, false),
+            Model.ImageItem(R.drawable.whitesquare, R.color.white, false),
+        )
 
     fun resetGame() {
         for (i in imageList.indices) {
@@ -61,7 +58,7 @@ class GameViewModel : ViewModel() {
         turn = 0
         winnerString.value = ""
         currentPlayer.value = "O"
-        _timeLeft.value=10
+        _timeLeft.value = 10
     }
 
     fun handleClick(index: Int) {
@@ -91,15 +88,24 @@ class GameViewModel : ViewModel() {
         }
     }
 
-    fun createMeatix(valuaOnTurn: MutableList<Model.ValuaOnTurn>, turn: Int): String {
+    fun createMeatix(
+        valuaOnTurn: MutableList<Model.ValuaOnTurn>,
+        turn: Int,
+    ): String {
         var winner = "No Winner"
-        var oMretix = arrayOf(
-            intArrayOf(0, 0, 0), intArrayOf(0, 0, 0), intArrayOf(0, 0, 0)
-        )
+        var oMretix =
+            arrayOf(
+                intArrayOf(0, 0, 0),
+                intArrayOf(0, 0, 0),
+                intArrayOf(0, 0, 0),
+            )
 
-        var xMretix = arrayOf(
-            intArrayOf(0, 0, 0), intArrayOf(0, 0, 0), intArrayOf(0, 0, 0)
-        )
+        var xMretix =
+            arrayOf(
+                intArrayOf(0, 0, 0),
+                intArrayOf(0, 0, 0),
+                intArrayOf(0, 0, 0),
+            )
         for (i in 0 until 9) {
             if (valuaOnTurn[i].clicked == "o") {
                 oMretix[valuaOnTurn[i].index / 3][valuaOnTurn[i].index % 3] = 1
@@ -132,7 +138,6 @@ class GameViewModel : ViewModel() {
                 return true
             }
         }
-
         if (board[0][0] != 0 && board[0][0] == board[1][1] && board[1][1] == board[2][2]) {
             return true
         }
@@ -143,35 +148,34 @@ class GameViewModel : ViewModel() {
         return false
     }
 
-
-    private fun startCountdown(winner : String) {
-        Log.d("Boon1","Turn : ${turn}")
-        if(turn ==1){
+    private fun startCountdown(winner: String) {
+        Log.d("Boon1", "Turn : $turn")
+        if (turn == 1) {
             viewModelScope.launch {
-                while (_timeLeft.value > 0 && winnerString.value=="") {
+                while (_timeLeft.value > 0 && winnerString.value == "") {
                     delay(1000L)
                     _timeLeft.value -= 1
                 }
                 loser(winner)
             }
-        }else{
-            _timeLeft.value=10
+        } else {
+            _timeLeft.value = 10
         }
-
     }
 
-
-    fun loser(winner : String){
+    fun loser(winner: String) {
         for (index2 in 0 until imageList.size) {
             imageList[index2].clicked = true
         }
-        if (winnerString.value==""){
+        if (winnerString.value == "") {
             winnerString.value = "Winner : $winner is winner."
         }
-
     }
 
-    fun logMatrix(matrix: Array<IntArray>, name: String) {
+    fun logMatrix(
+        matrix: Array<IntArray>,
+        name: String,
+    ) {
         Log.d("Matrix", "name : $name")
         for (i in matrix) {
             Log.d("Matrix", i.joinToString(", "))
